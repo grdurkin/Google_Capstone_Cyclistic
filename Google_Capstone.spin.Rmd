@@ -1,0 +1,671 @@
+
+```{r }
+# title: Google Capstone Project - Cyclistic Bikes 
+# author: Gavin Durkin
+# date: March 31, 2023
+# output: html_document
+```
+```{r }
+
+# Using data collected by Divvy, a bike ride-share company in Chicago, I will be
+# analyzing it as though the fictitious company, Cyclistic Bikes, also in Chicago,
+# collected the data.  With this data, I attempt to answer the question:
+# How do members and casual riders differ?
+
+# # # # # # # # # # # # # # # # # # # # # # # 
+# Install required packages
+# tidyverse for data import and wrangling
+# lubridate for date functions
+# ggplot for visualization
+# # # # # # # # # # # # # # # # # # # # # # #  
+# Install the necessary packages
+install.packages("tidyverse")
+install.packages("lubridate")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("readr")
+install.packages("dplyr")
+install.packages("here")
+install.packages("skimr")
+install.packages("janitor")
+install.packages("scales")
+install.packages("rmarkdown")
+
+#Use library() to load the packages
+library(tidyverse)  #helps wrangle data
+library(lubridate)  #helps wrangle date attributes
+library(ggplot2)  #helps visualize data
+library(tidyr)  #helps to make tidy data
+library(readr)  #helps with importing data
+library(dplyr)  #helps with data manipulation tasks
+library(here)  #helps makes referencing files easier
+library(skimr)  #helps to make summarizing and skimming data easier
+library(janitor)  #helps clean data
+library(hms)  #helps with time
+library(scales)  #helps with plotting
+library(rmarkdown)
+library(knitr)
+getwd() #displays your working directory
+setwd("/cloud/project/cyclistic_capstone") #sets your working directory to simplify calls to data ... make sure to use your OWN username instead of mine ;)
+
+#=====================
+# STEP 1: COLLECT AND UPLOAD DATA
+#=====================
+# Upload the Divvy datasets (csv files) here:
+march_2022 <- read_csv("202203_divvy_tripdata.csv")
+april_2022 <- read_csv("202204_divvy_tripdata.csv")
+may_2022 <- read_csv("202205_divvy_tripdata.csv")
+june_2022 <- read_csv("202206_divvy_tripdata.csv")
+july_2022 <- read.csv("202207_divvy_tripdata.csv")
+august_2022 <- read.csv("202208_divvy_tripdata.csv")
+september_2022 <- read.csv("202209_divvy_tripdata.csv")
+october_2022 <- read.csv("202210_divvy_tripdata.csv")
+november_2022 <- read.csv("202211_divvy_tripdata.csv")
+december_2022 <- read.csv("202212_divvy_tripdata.csv")
+january_2023 <- read.csv("202301_divvy_tripdata.csv")
+february_2023 <- read.csv("202302_divvy_tripdata.csv")
+
+#====================================================
+# STEP 2: WRANGLE DATA AND COMBINE INTO A SINGLE FILE
+#====================================================
+# Compare column names each of the files
+# While the names don't have to be in the same order, they MUST match 
+# perfectly before we can use a command to join them into one file
+colnames(march_2022)
+colnames(april_2022)
+colnames(may_2022)
+colnames(june_2022)
+colnames(july_2022)
+colnames(august_2022)
+colnames(september_2022)
+colnames(october_2022)
+colnames(november_2022)
+colnames(december_2022)
+colnames(january_2023)
+colnames(february_2023)
+
+# Rename columns to make them consistent and easy to read
+# Do this for each data file
+(march_2022 <- rename(march_2022,
+                   trip_id = ride_id,
+                   bike_type = rideable_type, 
+                   start_time = started_at,  
+                   end_time = ended_at,  
+                   origin = start_station_name, 
+                   origin_id = start_station_id,
+                   destination = end_station_name, 
+                   destination_id = end_station_id,
+                   user_type = member_casual,
+                   start_lat = start_lat,
+                   start_lng = start_lng,
+                   end_lat = end_lat,
+                   end_lng = end_lng))
+
+(april_2022 <- rename(april_2022,
+                      trip_id = ride_id,
+                      bike_type = rideable_type, 
+                      start_time = started_at,  
+                      end_time = ended_at,  
+                      origin = start_station_name, 
+                      origin_id = start_station_id,
+                      destination = end_station_name, 
+                      destination_id = end_station_id,
+                      user_type = member_casual,
+                      start_lat = start_lat,
+                      start_lng = start_lng,
+                      end_lat = end_lat,
+                      end_lng = end_lng))
+
+(may_2022 <- rename(may_2022,
+                    trip_id = ride_id,
+                    bike_type = rideable_type, 
+                    start_time = started_at,  
+                    end_time = ended_at,  
+                    origin = start_station_name, 
+                    origin_id = start_station_id,
+                    destination = end_station_name, 
+                    destination_id = end_station_id,
+                    user_type = member_casual,
+                    start_lat = start_lat,
+                    start_lng = start_lng,
+                    end_lat = end_lat,
+                    end_lng = end_lng))
+
+(june_2022 <- rename(june_2022,
+                     trip_id = ride_id,
+                     bike_type = rideable_type, 
+                     start_time = started_at,  
+                     end_time = ended_at,  
+                     origin = start_station_name, 
+                     origin_id = start_station_id,
+                     destination = end_station_name, 
+                     destination_id = end_station_id,
+                     user_type = member_casual,
+                     start_lat = start_lat,
+                     start_lng = start_lng,
+                     end_lat = end_lat,
+                     end_lng = end_lng))
+
+(july_2022 <- rename(july_2022,
+                     trip_id = ride_id,
+                     bike_type = rideable_type, 
+                     start_time = started_at,  
+                     end_time = ended_at,  
+                     origin = start_station_name, 
+                     origin_id = start_station_id,
+                     destination = end_station_name, 
+                     destination_id = end_station_id,
+                     user_type = member_casual,
+                     start_lat = start_lat,
+                     start_lng = start_lng,
+                     end_lat = end_lat,
+                     end_lng = end_lng))
+
+(august_2022 <- rename(august_2022,
+                       trip_id = ride_id,
+                       bike_type = rideable_type, 
+                       start_time = started_at,  
+                       end_time = ended_at,  
+                       origin = start_station_name, 
+                       origin_id = start_station_id,
+                       destination = end_station_name, 
+                       destination_id = end_station_id,
+                       user_type = member_casual,
+                       start_lat = start_lat,
+                       start_lng = start_lng,
+                       end_lat = end_lat,
+                       end_lng = end_lng))
+
+(september_2022 <- rename(september_2022,
+                          trip_id = ride_id,
+                          bike_type = rideable_type, 
+                          start_time = started_at,  
+                          end_time = ended_at,  
+                          origin = start_station_name, 
+                          origin_id = start_station_id,
+                          destination = end_station_name, 
+                          destination_id = end_station_id,
+                          user_type = member_casual,
+                          start_lat = start_lat,
+                          start_lng = start_lng,
+                          end_lat = end_lat,
+                          end_lng = end_lng))
+
+(october_2022 <- rename(october_2022,
+                        trip_id = ride_id,
+                        bike_type = rideable_type, 
+                        start_time = started_at,  
+                        end_time = ended_at,  
+                        origin = start_station_name, 
+                        origin_id = start_station_id,
+                        destination = end_station_name, 
+                        destination_id = end_station_id,
+                        user_type = member_casual,
+                        start_lat = start_lat,
+                        start_lng = start_lng,
+                        end_lat = end_lat,
+                        end_lng = end_lng))
+
+(november_2022 <- rename(november_2022,
+                         trip_id = ride_id,
+                         bike_type = rideable_type, 
+                         start_time = started_at,  
+                         end_time = ended_at,  
+                         origin = start_station_name, 
+                         origin_id = start_station_id,
+                         destination = end_station_name, 
+                         destination_id = end_station_id,
+                         user_type = member_casual,
+                         start_lat = start_lat,
+                         start_lng = start_lng,
+                         end_lat = end_lat,
+                         end_lng = end_lng))
+
+(december_2022 <- rename(december_2022,
+                         trip_id = ride_id,
+                         bike_type = rideable_type, 
+                         start_time = started_at,  
+                         end_time = ended_at,  
+                         origin = start_station_name, 
+                         origin_id = start_station_id,
+                         destination = end_station_name, 
+                         destination_id = end_station_id,
+                         user_type = member_casual,
+                         start_lat = start_lat,
+                         start_lng = start_lng,
+                         end_lat = end_lat,
+                         end_lng = end_lng))
+
+(january_2023 <- rename(january_2023,
+                        trip_id = ride_id,
+                        bike_type = rideable_type, 
+                        start_time = started_at,  
+                        end_time = ended_at,  
+                        origin = start_station_name, 
+                        origin_id = start_station_id,
+                        destination = end_station_name, 
+                        destination_id = end_station_id,
+                        user_type = member_casual,
+                        start_lat = start_lat,
+                        start_lng = start_lng,
+                        end_lat = end_lat,
+                        end_lng = end_lng))
+
+(february_2023 <- rename(february_2023,
+                         trip_id = ride_id,
+                         bike_type = rideable_type, 
+                         start_time = started_at,  
+                         end_time = ended_at,  
+                         origin = start_station_name, 
+                         origin_id = start_station_id,
+                         destination = end_station_name, 
+                         destination_id = end_station_id,
+                         user_type = member_casual,
+                         start_lat = start_lat,
+                         start_lng = start_lng,
+                         end_lat = end_lat,
+                         end_lng = end_lng))
+
+# Inspect the dataframes and look for incongruities
+str(march_2022)
+str(april_2022)
+str(may_2022)
+str(june_2022)
+str(july_2022)
+str(august_2022)
+str(september_2022)
+str(october_2022)
+str(november_2022)
+str(december_2022)
+str(january_2023)
+str(february_2023)
+
+# Convert trip_id and bike_type to character so that they can stack correctly
+# Also convert start_time and end_time to character format.
+march_2022 <-  mutate(march_2022, trip_id = as.character(trip_id),
+                   bike_type = as.character(bike_type),
+                   start_time = as.character(start_time),
+                   end_time = as.character(end_time)) 
+april_2022 <-  mutate(april_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+may_2022 <-  mutate(may_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+june_2022 <-  mutate(june_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+july_2022 <-  mutate(july_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+august_2022 <-  mutate(august_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+september_2022 <-  mutate(september_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+october_2022 <-  mutate(october_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+november_2022 <-  mutate(november_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+december_2022 <-  mutate(december_2022, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+january_2023 <-  mutate(january_2023, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+february_2023 <-  mutate(february_2023, trip_id = as.character(trip_id),
+                      bike_type = as.character(bike_type),
+                      start_time = as.character(start_time),
+                      end_time = as.character(end_time))
+
+# Stack the individual month's data frames into one big data frame
+all_trips <- bind_rows(march_2022, april_2022, may_2022, june_2022, july_2022, august_2022, september_2022, october_2022, november_2022, december_2022, january_2023, february_2023)
+
+# Convert all of the times to datetime format for merging the dataframes
+all_trips <- mutate(all_trips, start_time = as.POSIXct(start_time),
+                    end_time = as.POSIXct(end_time))
+
+#======================================================
+# STEP 3: CLEAN UP AND ADD DATA TO PREPARE FOR ANALYSIS
+#======================================================
+# Inspect the new table that has been created
+colnames(all_trips)  #List of column names
+nrow(all_trips)  #How many rows are in data frame?
+dim(all_trips)  #Dimensions of the data frame?
+head(all_trips)  #See the first 6 rows of data frame.
+tail(all_trips)  #See the last 6 rows of data frame.
+str(all_trips)  #See list of columns and data types (numeric, character, etc)
+summary(all_trips)  #Statistical summary of data. Mainly for numerics
+
+#Find the occurrences in the user_type column
+
+table(all_trips['user_type'])
+
+# There are a few problems we will need to fix:
+# (1) Remove unnecessary columns: "origin_id", "destination_id", "start_lat", 
+#   "start_lng", "end_lat", and "end_lng".
+# (2) Separate the date by day, month, and year to do more analysis.
+# (3) There are some rides where "trip_duration" shows up as negative, including
+#   several hundred rides where Divvy took bikes out of circulation for Quality 
+#   Control reasons. We will want to delete these rides.
+# (4) There is missing data under the "origin", "origin_id", "destination", and 
+#   "destination_id" columns.
+# (5) Remove duplicate data.
+# (6) Remove negative values from the "trip_duration" column.
+# (7) Include a column based on the seasons of Chicago.
+
+# Remove columns: "origin_id", "destination_id", "start_lat", "start_lng", 
+#   "end_lat", and "end_lng".
+all_trips <- all_trips %>%  
+  select(-c(origin_id, destination_id, start_lat, start_lng, end_lat, end_lng))
+
+# Add columns that list the date, month, day, and year of each ride
+all_trips$date <- as.Date(all_trips$start_time) 
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+
+# Add column to list the hours of the day for each trip
+all_trips$time <- format(as.Date(all_trips$date), "%H:%M:%S") #format time
+all_trips$time <- as_hms((all_trips$start_time)) #create new column for time
+all_trips$hour <- hour(all_trips$time) #create new column for hour
+
+# Find each trip duration and compile into a new column called "trip_duration"
+all_trips$trip_duration <- difftime(all_trips$end_time, all_trips$start_time, 
+                                    units = "mins")
+
+# Inspect the structure of the columns
+str(all_trips)
+
+# Convert "trip_duration" from Factor to numeric
+is.factor(all_trips$trip_duration)
+all_trips$trip_duration <- as.numeric(as.character(all_trips$trip_duration))
+is.numeric(all_trips$trip_duration)
+
+# Add a "seasons" column.
+# Winter = December, January, and February
+# Spring = March, April, and May
+# Summer = June, July, and August
+# Autumn = September, October, and November
+
+all_trips <- all_trips %>% mutate(season =
+                                    case_when(
+                                      month == "03" | month == "04" | 
+                                        month == "05" ~ "Spring",
+                                      month == "06" | month == "07" | 
+                                        month == "08" ~ "Summer",
+                                      month == "09" | month == "10" | 
+                                        month == "11" ~ "Autumn",
+                                      month == "12" | month == "01" | 
+                                        month == "02" ~"Winter"
+                                    ))
+
+# Add a time_period column
+all_trips <- all_trips %>% mutate(time_period =
+                                    case_when(
+                                      hour == "6" | hour == "7" | hour == "8" 
+                                      | hour == "9" | hour == "10" | 
+                                        hour == "11" ~ "Morning",
+                                      hour == "12" | hour == "13" | hour == "14" 
+                                      | hour == "15" | hour == "16" | 
+                                        hour == "17" ~ "Afternoon",
+                                      hour == "18" | hour == "19" | hour == "20" 
+                                      | hour == "21" | hour == "22" | 
+                                        hour == "23" ~ "Evening",
+                                      hour == "00" | hour == "01" | hour == "02" 
+                                      | hour == "03" | hour == "04" | 
+                                        hour == "05" ~"Night"
+                                    ))
+
+# Remove "bad" data
+# We will create a new version of the dataframe (v2) since data is being removed
+# Remove the rows with missing data.
+all_trips_v2 <- all_trips %>% drop_na()
+
+# The dataframe includes a few hundred entries when bikes were taken out of 
+#   docks and checked for quality by Divvy or trip_duration was negative
+all_trips_v2 <- all_trips_v2[!(all_trips_v2$trip_duration <= 0),]
+
+# Remove the duplicate data.
+all_trips_v2 <- distinct(all_trips_v2)
+
+#=====================================
+# STEP 4: CONDUCT DESCRIPTIVE ANALYSIS
+#=====================================
+# Descriptive analysis on trip_duration (all figures in seconds)
+mean(all_trips_v2$trip_duration) #straight average (total trip duration / rides)
+median(all_trips_v2$trip_duration) #midpoint number for trip duration
+max(all_trips_v2$trip_duration) #longest ride
+min(all_trips_v2$trip_duration) #shortest ride
+
+# You can condense the four lines above to one line using summary() on the 
+#   specific attribute
+summary(all_trips_v2$trip_duration)
+
+# Compare members and casual riders
+aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type, FUN = mean)
+aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type, FUN = median)
+aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type, FUN = max)
+aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type, FUN = min)
+
+# See the average trip_duration by each day for members vs casual riders
+aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type + 
+            all_trips_v2$day_of_week, FUN = mean)
+
+# Notice that the days of the week are out of order. Let's fix that.
+all_trips_v2$day_of_week <- ordered(all_trips_v2$day_of_week, 
+                                    levels=c("Sunday", "Monday", "Tuesday", 
+                                             "Wednesday", "Thursday", "Friday", 
+                                             "Saturday"))
+
+# analyze ridership data by type and weekday
+all_trips_v2 %>% 
+  mutate(weekday = wday(start_time, label = TRUE)) %>%  #creates weekday field
+  group_by(user_type, weekday) %>%  #groups by usertype and weekday
+  summarise(number_of_rides = n()		#calculates the number of rides
+            ,average_duration = mean(trip_duration)) %>% #calcs the ave duration
+  arrange(user_type, weekday)								# sorts
+
+# Create a visualization for the number of rides by user_type
+all_trips_v2 %>% 
+  mutate(weekday = wday(start_time, label = TRUE)) %>% 
+  group_by(user_type, weekday) %>% 
+  summarise(number_of_rides = n(),
+            average_duration = mean(trip_duration)) %>% 
+  arrange(user_type, weekday)  %>% 
+  ggplot(aes(x = weekday, y = number_of_rides, fill = user_type)) +
+  geom_col(position = "dodge") +
+  labs(title = "Number of Rides Each Day of the Week", 
+       subtitle = "Members vs Casual Riders between March 2022 and February 
+       2023", caption = "Source: Cyclistic Bikes, Chicago", 
+       fill = "User Type") +
+  xlab("Day of the Week") +
+  ylab("Total Number of Rides") +
+  scale_y_continuous(labels = comma) +
+  scale_fill_discrete(labels = c("Casual", "Member"))
+  
+
+# Create a visualization for average duration
+all_trips_v2 %>% 
+  mutate(weekday = wday(start_time, label = TRUE)) %>% 
+  group_by(user_type, weekday) %>% 
+  summarise(number_of_rides = n(),
+            average_duration = mean(trip_duration)) %>% 
+  arrange(user_type, weekday)  %>% 
+  ggplot(aes(x = weekday, y = average_duration, fill = user_type)) +
+  geom_col(position = "dodge") +
+  labs(title = "Average Trip Duration Each Day of the Week", 
+       subtitle = "Members vs Casual Riders between March 2022 and February 
+       2023", caption = "Source: Cyclistic Bikes, Chicago", 
+       fill = "User Type") +
+  xlab("Day of the Week") +
+  ylab("Average Trip Duration (minutes)") +
+  scale_fill_discrete(labels = c("Casual", "Member"))
+
+# Create a visualization for Number of Rides per Season
+all_trips_v2 %>% 
+  group_by(user_type, season) %>% 
+  summarise(number_of_rides = n(),
+            average_duration = mean(trip_duration)) %>% 
+  arrange(user_type, season)  %>% 
+  ggplot(aes(x = season, y = number_of_rides, fill = user_type)) +
+  geom_col(position = "dodge") +
+  labs(title = "Average Number of Rides per Season", 
+       subtitle = "Members vs Casual Riders between March 2022 and February 
+       2023", caption = "Source: Cyclistic Bikes, Chicago", 
+       fill = "User Type") +
+  xlab("Season") +
+  ylab("Number of Rides") +
+  scale_fill_discrete(labels = c("Casual", "Member")) +
+  scale_x_discrete(limits = c("Winter", "Spring", "Summer", "Autumn"))
+
+# Create a visualization for the Number of Riders during different Time Periods
+all_trips_v2 %>% 
+  group_by(user_type, time_period) %>% 
+  summarise(number_of_rides = n(),
+            average_duration = mean(trip_duration)) %>% 
+  arrange(user_type, time_period)  %>% 
+  ggplot(aes(x = time_period, y = (number_of_rides / 12), fill = user_type)) +
+  geom_col(position = "dodge") +
+  labs(title = "Average Number of Rides per Time Period", 
+       subtitle = "Members vs Casual Riders between March 2022 and February 
+       2023", caption = "Source: Cyclistic Bikes, Chicago", 
+       fill = "User Type") +
+  xlab("Time Period") +
+  ylab("Average Number of Rides per Month") +
+  scale_fill_discrete(labels = c("Casual", "Member")) +
+  scale_x_discrete(limits = c("Morning", "Afternoon", "Evening", "Night")) +
+  scale_y_continuous(labels = comma)
+
+# Count the number of different user_types
+all_trips_count <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  count(user_type)
+
+# Find the percentage of each User Type
+total_riders <- sum(all_trips_count$n)
+
+all_trips_count <- all_trips_count %>%
+  group_by(user_type) %>%
+  mutate(percent = (n/total_riders) * 100)
+
+# Find the bike_type uses per user type
+all_trips_bikes <- all_trips_v2 %>%
+  group_by(user_type, bike_type) %>%
+  count(bike_type)
+
+# Find the average trip duration for each user type
+all_trips_duration <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  summarise(trip_duration = mean(trip_duration))
+
+# Find the number of rides per hour per user_type
+all_trips_hour <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  count(hour) %>%
+  print(n = 48)
+
+# Find the number of rides per time period per user_type
+all_trips_period <- all_trips_v2 %>%
+  group_by(user_type, time_period) %>%
+  count(time_period)
+
+# Find the number of rides per season per user_type
+all_trips_seasons <- all_trips_v2 %>%
+  group_by(user_type, season) %>%
+  count(season)
+#=================================================
+# STEP 5: EXPORT SUMMARY FILE FOR FURTHER ANALYSIS
+#=================================================
+# Create a csv file that we will visualize in Tableau
+# This file location is for a Mac. 
+# This data frame summarizes the differences between members and casual riders
+#   for trip_duration and day of the week.
+ave_trip_duration <- aggregate(all_trips_v2$trip_duration ~ all_trips_v2$user_type + 
+                      all_trips_v2$day_of_week, FUN = mean)
+
+# Count the number of different user_types
+all_trips_count <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  count(user_type)
+
+# Find the percentage of each User Type
+total_riders <- sum(all_trips_count$n)
+
+all_trips_count <- all_trips_count %>%
+  group_by(user_type) %>%
+  mutate(percent = (n/total_riders) * 100)
+
+# Find the bike_type uses per user type
+all_trips_bikes <- all_trips_v2 %>%
+  group_by(user_type, bike_type) %>%
+  count(bike_type)
+
+# Find the average trip duration for each user type
+all_trips_duration <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  summarise(trip_duration = mean(trip_duration))
+
+# Find the number of rides per hour per user_type
+all_trips_hour <- all_trips_v2 %>%
+  group_by(user_type) %>%
+  count(hour) %>%
+  print(n = 48)
+
+# Find the number of rides per time period per user_type
+all_trips_period <- all_trips_v2 %>%
+  group_by(user_type, time_period) %>%
+  count(time_period)
+
+# Find the number of rides per season per user_type
+all_trips_seasons <- all_trips_v2 %>%
+  group_by(user_type, season) %>%
+  count(season)
+
+# The seasonal differences between members and casual riders
+all_trips_season <- all_trips_v2 %>%
+  group_by(season, user_type) %>%
+  summarise_at(vars(trip_duration),
+               list(time = mean))
+
+write.csv(ave_trip_duration, "user_type_counts.csv")
+
+write.csv(all_trips_bikes, "bike_type.csv")
+
+write.csv(all_trips_duration, "trip_duration.csv")
+
+write.csv(ave_trip, "day_duration.csv")
+
+write.csv(all_trips_seasons, "seasonal_rides.csv")
+
+write.csv(all_trips_season, "seasonal_duration.csv")
+
+write.csv(all_trips_period, "time_period.csv")
+
+write.csv(all_trips_hour, "hourly_rides.csv")
+
+write.csv(all_trips_count, "user_percentage.csv")
+```
+
+
+
+---
+title: Google_Capstone.R
+author: r1915117
+date: '2023-03-31'
+
+---
