@@ -8,5 +8,7 @@ I was a junior data analystic tasked with analyzing the company's data in order 
 This analysis was to be used to make recommendations for new digital marketing strategies that would target casual riders in hopes of converting them to members.
 -----
 LINKS
+
 [Tableau Story](https://public.tableau.com/app/profile/gavin.durkin/viz/CyclisticBikes_16796891094220/GoogleCapstoneStory)
+
 [My Article](https://gavinrdurkin.wordpress.com/2023/03/31/googles-data-analytics-capstone-project-cyclistic-bikes/)
